@@ -1,83 +1,69 @@
 class Dictionary {
-    constructor(selector, pavadinimas, list) {
-        // console.log('zodynas pasileido...');
-        // console.log(name);
+    constructor(selector, name, list) {
         this.selector = selector;
-        this.name = pavadinimas;
+        this.name = name;
         this.dictionaryList = list;
-        
-        // tai elementas, kuriame generuosim visa turini
+
+        // tai elementas, kuriame generuosime visa turini
         this.DOM = null;
     }
 
     init() {
-        // 1) patikriname, jog validus "selector"
-        // 2) patikriname, jog validus this.dictionaryList'as
-        if () {
-            return false
+        // patikriname, jog validus this.selector
+        // patikriname, jog validus this.dictionaryList
+        // randam this.DOM
+        if (!this.isValidSelector() ||
+            !this.isValidDictionary() ||
+            !this.findTargetElement()) {
+            return false;
         }
-        // document.querySelector('a')
 
-        // 3) random this.DOM
         this.render();
-        // 4) generuojame turini
     }
 
     isValidSelector() {
-        if (typeof this.selector !== "string" ||
-        this.selector === ''){
-            console.error('ERROR: Selector turi buti ne tuscias tekstas');
+        if (typeof this.selector !== 'string' ||
+            this.selector === '') {
+            console.error('ERROR: selector turi buti ne tuscias tekstas (string).');
             return false;
         }
         return true;
     }
+
     isValidDictionary() {
-        if (!Array.isArray(this.dictionaryLis) || 
-        this.dictionaryList === 0) {
-            console.error('ERROR: zodynas turi buti ne tuscias array');
-            console.warn('ERROR: zodynas turi buti ne tuscias array');
+        if (!Array.isArray(this.dictionaryList) ||
+            this.dictionaryList.length === 0) {
+            console.error('ERROR: zodynas turi buti ne tuscias array.');
             return false;
         }
         return true;
     }
 
     findTargetElement() {
-        // console.log('ieskome elemento');
-        // console.log('pagal:', this.selector);
-
-        // const elementDOM = document. querySelector(this.selector);
-        // console.log(elementDOM);
-
-        // if(elementDOM) {
-        //     console.log(elementDOM);
-        // } else {
-        //     console.log('elemento rasti nepavyko');
-        // }
         this.DOM = document.querySelector(this.selector);
         if (!this.DOM) {
-            console.error('ERROR: pagal pateikta selector, norimo elemento nepavyko rasti');
+            console.error('ERROR: pagal pateikta selector, norimo elemento nepavyko rasti.')
             return false;
         }
         return true;
     }
 
     render() {
-        console.log('piesim turini...');
-        console.log(this.DOM);
-        console.log(this.dictionaryList);
-
         let HTML = '';
 
-        for (let i = 0; i < this.dictionaryList.lenght; i++) {
+        for (let i = 0; i < this.dictionaryList.length; i++) {
             const wordPair = this.dictionaryList[i];
 
-            if(!this.isValidWordPair(wordPair)) {
+            if (!this.isValidWordPair(wordPair)) {
                 continue;
             }
 
-
-            HTML += '<div clsass = "item">'
+            HTML += `<div class="item">
+                        <div class="col">${wordPair.en}</div>
+                        <div class="col">${wordPair.lt}</div>
+                    </div>`;
         }
+
         this.DOM.innerHTML = HTML;
     }
 
@@ -91,7 +77,7 @@ class Dictionary {
             pair.en === '' ||
             typeof pair.lt !== 'string' ||
             pair.lt === '') {
-            console.warn('WARNING: verciamu zodziu pora (gauta reiksme: ${pair}) turi buti objektas su "en" ir "lt" parametrais');
+            console.warn(`WARNING: verciamu zodziu pora (gauta reiksme: ${pair}) turi buti objektas su "en" ir "lt" parametrais, kuriu abu turi buti ne tusti tekstai.`);
             return false;
         }
         return true;
