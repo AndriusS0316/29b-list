@@ -66,9 +66,35 @@ class Dictionary {
         console.log(this.DOM);
         console.log(this.dictionaryList);
 
-        const HTML = '<div class = "rytas">labas rytas</div>';
+        let HTML = '';
 
+        for (let i = 0; i < this.dictionaryList.lenght; i++) {
+            const wordPair = this.dictionaryList[i];
+
+            if(!this.isValidWordPair(wordPair)) {
+                continue;
+            }
+
+
+            HTML += '<div clsass = "item">'
+        }
         this.DOM.innerHTML = HTML;
+    }
+
+    isValidWordPair(pair) {
+        if (typeof pair !== 'object' ||
+            Array.isArray(pair) ||
+            pair === null ||
+            !pair.en ||
+            !pair.lt ||
+            typeof pair.en !== 'string' ||
+            pair.en === '' ||
+            typeof pair.lt !== 'string' ||
+            pair.lt === '') {
+            console.warn('WARNING: verciamu zodziu pora (gauta reiksme: ${pair}) turi buti objektas su "en" ir "lt" parametrais');
+            return false;
+        }
+        return true;
     }
 }
 
